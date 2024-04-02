@@ -1,0 +1,13 @@
+{
+  "domain": "smart2000usb",
+  "name": "Smart Boat 2000 USB",
+  "documentation": "https://www.smartboatinnovations.com/smart0183tcp",
+  "dependencies": [],
+  "integration_type": "hub",
+  "requirements": [],
+  "codeowners": [],
+  "version": "1.0",
+  "config_flow": true,
+  "iot_class": "local_polling"
+}
+

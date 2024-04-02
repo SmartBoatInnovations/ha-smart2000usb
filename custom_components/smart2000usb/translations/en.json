@@ -1,0 +1,35 @@
+{
+  "config": {
+    "error": {
+      "name_exists": "This device name is already in use, please choose a different one.",
+      "cannot_connect": "Failed to connect to the server. Please check the IP address and port."
+    },
+    "step": {
+      "user": {
+        "title": "Connect to Smart 0183 TCP Sensor",
+        "description": "Please enter the Device Name, Hostname or IP address, and Port of your NMEA TCP device.",
+        "data": {
+          "name": "TCP Device Name",
+          "host": "Hostname or IP address",
+          "port": "Port number"
+        }
+      }
+    },
+    "success": {
+      "title": "Connection Successful",
+      "description": "You have successfully connected to Smart 0183 TCP Sensor."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Smart 0183 TCP Sensor",
+        "description": "Update the Hostname or IP address and Port of your NMEA TCP device.",
+        "data": {
+          "host": "Hostname or IP address",
+          "port": "Port number"
+        }
+      }
+    }
+  }
+}
