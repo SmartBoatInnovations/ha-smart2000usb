@@ -134,6 +134,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, sensor.stop_serial_read)
     async_add_entities([sensor], True)
     
+    # Start the task that updates the sensor availability every 5 minutes
+    hass.loop.create_task(update_sensor_availability(hass,name))
+    
     _LOGGER.debug(f"Smart2000usb {name} setup completed.")
     
     return True
