@@ -134,7 +134,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, sensor.stop_serial_read)
     async_add_entities([sensor], True)
     
-    _LOGGER.info(f"Smart2000usb {name} setup completed.")
+    _LOGGER.debug(f"Smart2000usb {name} setup completed.")
     
     return True
 
@@ -144,16 +144,16 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Retrieve configuration from entry
     name = entry.data["name"]
 
-    _LOGGER.info(f"Unload integration with name: {name}")
+    _LOGGER.debug(f"Unload integration with name: {name}")
    
     # Clean up hass.data entries
     for key_suffix in ['add_entities', 'created_sensors', 'smart2000usb_data', 'fast_packet', 'whitelist', 'blacklist', 'smart2000timestamp']:
         key = f"{name}_{key_suffix}"
         if key in hass.data:
-            _LOGGER.info(f"Removing {key} from hass.data.")
+            _LOGGER.debug(f"Removing {key} from hass.data.")
             del hass.data[key]
 
-    _LOGGER.info(f"Unload and cleanup for {name} completed successfully.")
+    _LOGGER.debug(f"Unload and cleanup for {name} completed successfully.")
     
     return True
 
@@ -203,7 +203,7 @@ def call_process_function(pgn, hass, instance_name, data_frames):
     if function_to_call:
         function_to_call(hass, instance_name, data_frames)
     else:
-        _LOGGER.info(f"No function found for PGN: {pgn}")
+        _LOGGER.debug(f"No function found for PGN: {pgn}")
 
 
 def combine_pgn_frames(hass, pgn, instance_name):
@@ -212,7 +212,7 @@ def combine_pgn_frames(hass, pgn, instance_name):
     fast_packet_key = f"{instance_name}_fast_packet_key"
     
     if pgn not in hass.data[fast_packet_key]:
-        _LOGGER.info(f"No fast packet data available for PGN {pgn}")
+        _LOGGER.debug(f"No fast packet data available for PGN {pgn}")
         return None
 
     pgn_data = hass.data[fast_packet_key][pgn]
@@ -249,7 +249,7 @@ def process_fast_packet(pgn, hass, instance_name, data64, data64_hex):
         return
 
     if frame_counter != 0 and pgn_data['payload_length'] == 0:
-        _LOGGER.info(f"Ignoring frame {frame_counter} for PGN {pgn} as first frame has not been received.")
+        _LOGGER.debug(f"Ignoring frame {frame_counter} for PGN {pgn} as first frame has not been received.")
         return
        
     # Calculate data payload
@@ -271,10 +271,10 @@ def process_fast_packet(pgn, hass, instance_name, data64, data64_hex):
         
     else:       
         if sequence_counter != pgn_data['sequence_counter']:
-            _LOGGER.info(f"Ignoring frame {sequence_counter} for PGN {pgn} as it does not match current sequence.")
+            _LOGGER.debug(f"Ignoring frame {sequence_counter} for PGN {pgn} as it does not match current sequence.")
             return
         elif frame_counter in pgn_data['frames']:
-            _LOGGER.info(f"Frame {frame_counter} for PGN {pgn} is already stored.")
+            _LOGGER.debug(f"Frame {frame_counter} for PGN {pgn} is already stored.")
             return
         else:
             # For subsequent frames, exclude the last 2 hex characters (1 byte) from the payload
@@ -287,30 +287,30 @@ def process_fast_packet(pgn, hass, instance_name, data64, data64_hex):
     pgn_data['bytes_stored'] += byte_length  # Update the count of bytes stored
      
     # Log the extracted values
-    _LOGGER.info(f"Sequence Counter: {sequence_counter}")
-    _LOGGER.info(f"Frame Counter: {frame_counter}")
+    _LOGGER.debug(f"Sequence Counter: {sequence_counter}")
+    _LOGGER.debug(f"Frame Counter: {frame_counter}")
     
     if total_bytes is not None:
-        _LOGGER.info(f"Total Payload Bytes: {total_bytes}")
+        _LOGGER.debug(f"Total Payload Bytes: {total_bytes}")
 
-    _LOGGER.info(f"Orig Payload (hex): {data64_hex}")
-    _LOGGER.info(f"Data Payload (hex): {data_payload_hex}")
+    _LOGGER.debug(f"Orig Payload (hex): {data64_hex}")
+    _LOGGER.debug(f"Data Payload (hex): {data_payload_hex}")
     
     formatted_data = pprint.pformat(hass.data[fast_packet_key])
-    _LOGGER.info("HASS PGN Data: %s", formatted_data)
+    _LOGGER.debug("HASS PGN Data: %s", formatted_data)
     
     # Check if all expected bytes have been stored
     if pgn_data['bytes_stored'] >= pgn_data['payload_length']:
         
-        _LOGGER.info("All Fast packet frames collected for PGN: %d", pgn)
+        _LOGGER.debug("All Fast packet frames collected for PGN: %d", pgn)
 
         # All data for this PGN has been received, proceed to publish
         combined_payload_hex = combine_pgn_frames(hass, pgn, instance_name)
         combined_payload_int = int(combined_payload_hex, 16)
         
         if combined_payload_int is not None:
-            _LOGGER.info(f"Combined Payload (hex): {combined_payload_hex})")
-            _LOGGER.info(f"Combined Payload (hex): (hex: {combined_payload_int:x})")
+            _LOGGER.debug(f"Combined Payload (hex): {combined_payload_hex})")
+            _LOGGER.debug(f"Combined Payload (hex): (hex: {combined_payload_int:x})")
 
             call_process_function(pgn, hass, instance_name, combined_payload_int)
 
@@ -330,7 +330,7 @@ def can_process(hass, instance_name, pgn_id):
         hass.data[smart2000timestamp_key]["last_processed"][pgn_id] = now  
         return True
     else:
-        _LOGGER.info(f"Throttling activated for PGN {pgn_id} in instance {instance_name}.")
+        _LOGGER.debug(f"Throttling activated for PGN {pgn_id} in instance {instance_name}.")
         return False
 
 
@@ -384,7 +384,7 @@ def set_pgn_entity(hass, instance_name, state_value):
         pgn = int(pgn_hex, 16)
         
         if not is_pgn_allowed_based_on_lists(pgn, pgn_include_list, pgn_exclude_list):
-            _LOGGER.info(f"PGN {pgn} skipped due to white/black lists.")
+            _LOGGER.debug(f"PGN {pgn} skipped due to white/black lists.")
             return
 
         
@@ -392,9 +392,9 @@ def set_pgn_entity(hass, instance_name, state_value):
         data64 = int(data64_hex, 16)
 
         _LOGGER.debug('---------------------------------------------------')
-        _LOGGER.info('Reconstructed PGN  : %d (Hex: %s)', pgn, pgn_hex)
+        _LOGGER.debug('Reconstructed PGN  : %d (Hex: %s)', pgn, pgn_hex)
         _LOGGER.debug('Reconstructed source ID  : %d (Hex: %s)', source_id, source_id_hex)
-        _LOGGER.info('Reconstructed data64  : %d (Hex: %s)', data64, data64_hex)
+        _LOGGER.debug('Reconstructed data64  : %d (Hex: %s)', data64, data64_hex)
 
     
         pgn_type = hass.data[smart2000usb_data_key].get(pgn)
@@ -403,7 +403,7 @@ def set_pgn_entity(hass, instance_name, state_value):
         
             
         if pgn_type and pgn_type == 'Fast':
-            _LOGGER.info(f"PGN {pgn} is of type 'Fast'.")
+            _LOGGER.debug(f"PGN {pgn} is of type 'Fast'.")
             process_fast_packet(pgn, hass, instance_name, data64, data64_hex)
         elif pgn_type and pgn_type == 'Single':
             if not can_process(hass, instance_name, pgn):
@@ -412,7 +412,7 @@ def set_pgn_entity(hass, instance_name, state_value):
             _LOGGER.debug(f"PGN {pgn} is of type 'Single'.")
             call_process_function(pgn, hass, instance_name, data64)
         else:
-            _LOGGER.info(f"PGN {pgn} is not a known PGN.")
+            _LOGGER.debug(f"PGN {pgn} is not a known PGN.")
                 
 
     except ValueError as e:
@@ -420,7 +420,7 @@ def set_pgn_entity(hass, instance_name, state_value):
 
 
 def publish_field(hass, instance_name, field_name, field_description, field_value, pgn_description, unit, pgn_id):
-    _LOGGER.info(f"Publishing field for PGN {pgn_id} and field {field_name} with value {field_value}")
+    _LOGGER.debug(f"Publishing field for PGN {pgn_id} and field {field_name} with value {field_value}")
 
     add_entities_key = f"{instance_name}_add_entities"
     created_sensors_key = f"{instance_name}_created_sensors"
@@ -495,7 +495,7 @@ def process_packet(hass, instance_name, packet):
     combined_hex = f"{pgn_id_hex}:{source_id_hex}:{can_data_hex}"
     
     # Log the extracted information including the combined string
-    _LOGGER.info("PGN ID: %s, Frame ID: %s, CAN Data: %s, Source ID: %s, Combined: %s",
+    _LOGGER.debug("PGN ID: %s, Frame ID: %s, CAN Data: %s, Source ID: %s, Combined: %s",
                  pgn_id_hex,
                  binascii.hexlify(frame_id).decode('ascii'),
                  can_data_hex,
@@ -520,7 +520,7 @@ class SmartSensor(Entity):
         instance_name=None
     ):
         """Initialize the sensor."""
-        _LOGGER.info(f"Initializing sensor: {name} with state: {initial_state}")
+        _LOGGER.debug(f"Initializing sensor: {name} with state: {initial_state}")
 
         self._unique_id = name.lower().replace(" ", "_")
         self.entity_id = f"sensor.{self._unique_id}"
@@ -619,10 +619,10 @@ class SmartSensor(Entity):
             if self._last_updated and (datetime.now() - self._last_updated > timedelta(minutes=1)):
                 # It's been more than 1 minute since the last valid update
                 self._available = False
-                _LOGGER.info(f"Setting sensor:'{self._name}' as unavailable due to no valid update for over 1 minute")
+                _LOGGER.debug(f"Setting sensor:'{self._name}' as unavailable due to no valid update for over 1 minute")
             else:
                 # It's been less than 1 minute since the last valid update, keep the sensor available
-                _LOGGER.info(f"Sensor:'{self._name}' remains available as it's less than 1 minute since last valid state")
+                _LOGGER.debug(f"Sensor:'{self._name}' remains available as it's less than 1 minute since last valid state")
 
         try:
             self.async_schedule_update_ha_state()
@@ -720,7 +720,7 @@ class SerialSensor(SensorEntity):
         except Exception as exc:
             _LOGGER.exception("Error while reading from serial port: %s", exc)
         finally:
-            _LOGGER.info("Finished reading data")
+            _LOGGER.debug("Finished reading data")
 
 
     async def serial_read(self):
@@ -739,7 +739,7 @@ class SerialSensor(SensorEntity):
                     dsrdtr=self._dsrdtr,
                 )
                 
-                _LOGGER.info("Serial connection established")
+                _LOGGER.debug("Serial connection established")
                 await self.read_loop(reader)
                 
                 
@@ -747,7 +747,7 @@ class SerialSensor(SensorEntity):
                 _LOGGER.exception("Serial connection failed: %s. Retrying in %d seconds...", exc, self._retry_delay)
                 await self._handle_error()
             except asyncio.CancelledError:
-                _LOGGER.info("Serial read task was cancelled")
+                _LOGGER.debug("Serial read task was cancelled")
                 break
             except Exception as exc:
                 _LOGGER.exception("Unexpected error: %s. Retrying in %d seconds...", exc, self._retry_delay)

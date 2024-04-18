@@ -162,15 +162,15 @@ def decode_number(number_int, bit_length):
 
     if bit_length <= 3:
         if number_int == (1 << bit_length) - 1:
-            _LOGGER.info(f"Field not present for bit length <= 3. Number: {number_int}")
+            _LOGGER.debug(f"Field not present for bit length <= 3. Number: {number_int}")
             return None
     elif bit_length >= 4:
         max_positive_value = (1 << bit_length) - 1
         if number_int == max_positive_value:
-            _LOGGER.info(f"Field not present for bit length >= 4. Number: {number_int}")
+            _LOGGER.debug(f"Field not present for bit length >= 4. Number: {number_int}")
             return None
         elif number_int == max_positive_value - 1:
-            _LOGGER.info(f"Field has an error for bit length >= 4. Number: {number_int}")
+            _LOGGER.debug(f"Field has an error for bit length >= 4. Number: {number_int}")
             return None
 
     # If no special conditions met, log and return the number as is
