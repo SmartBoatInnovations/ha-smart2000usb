@@ -223,7 +223,8 @@ def combine_pgn_frames(hass, pgn, instance_name):
 
     for frame_counter in sorted(pgn_data['frames']):
         frame_data_hex = pgn_data['frames'][frame_counter]
-        combined_payload_hex += frame_data_hex  # Concatenate hex strings directly
+        combined_payload_hex = frame_data_hex + combined_payload_hex
+
 
     return combined_payload_hex
 
