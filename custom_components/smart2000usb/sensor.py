@@ -11,6 +11,7 @@ You may not copy, distribute, or modify this file or the accompanying software. 
 
 See the full license text in the accompanying LICENSE file.
 """
+
 # Standard Library Imports
 import asyncio
 import json
@@ -396,6 +397,20 @@ def set_pgn_entity(hass, instance_name, state_value):
             return
     
         pgn_hex, source_id_hex, data64_hex = parts[0], parts[1], parts[2]
+        
+        
+        # Validate the lengths of the fields
+        if len(pgn_hex) != 6:
+            _LOGGER.debug('Invalid PGN length: %s', pgn_hex)
+            return
+
+        if len(source_id_hex) != 2:
+            _LOGGER.debug('Invalid source ID length: %s', source_id_hex)
+            return
+
+        if len(data64_hex) != 16:
+            _LOGGER.debug('Invalid data64 length: %s', data64_hex)
+            return        
     
         # Convert the hexadecimal strings back to integer values
         pgn = int(pgn_hex, 16)
