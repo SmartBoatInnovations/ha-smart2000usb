@@ -401,15 +401,15 @@ def set_pgn_entity(hass, instance_name, state_value):
         
         # Validate the lengths of the fields
         if len(pgn_hex) != 6:
-            _LOGGER.debug('Invalid PGN length: %s', pgn_hex)
+            _LOGGER.debug('Invalid PGN length: %s', state_value)
             return
 
         if len(source_id_hex) != 2:
-            _LOGGER.debug('Invalid source ID length: %s', source_id_hex)
+            _LOGGER.debug('Invalid source ID length: %s', state_value)
             return
 
         if len(data64_hex) != 16:
-            _LOGGER.debug('Invalid data64 length: %s', data64_hex)
+            _LOGGER.debug('Invalid data64 length: %s', state_value)
             return        
     
         # Convert the hexadecimal strings back to integer values
