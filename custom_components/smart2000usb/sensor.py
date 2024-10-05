@@ -22,7 +22,7 @@ import pprint
 import serial_asyncio
 from serial import SerialException
 import binascii
-
+import aiofiles
 
 
 # Third-Party Library Imports
@@ -113,8 +113,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     config_dir = hass.config.config_dir
     json_path = os.path.join(config_dir, 'custom_components', 'smart2000usb', 'pgn_type.json')
     try:
-        with open(json_path, "r") as file:
-            smart_data = json.load(file)
+        async with aiofiles.open(json_path, "r") as file:
+            smart_data_content = await file.read()
+            smart_data = json.loads(smart_data_content)
 
         pgn_dict = {}
         # Iterate over each PGN entry in the list
