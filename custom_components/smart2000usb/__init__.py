@@ -26,10 +26,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     entry.async_on_unload(entry.add_update_listener(update_listener))
 
     hass.data[DOMAIN][entry.entry_id] = entry.data
-    # Forward the setup to the sensor platform
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "sensor")
-    )
+    
+    await hass.config_entries.async_forward_entry_setup(entry, "sensor")
+
     _LOGGER.debug("Smart2000USB entry setup completed successfully and update listener registered")
     return True
 
