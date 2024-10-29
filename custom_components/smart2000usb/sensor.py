@@ -59,6 +59,11 @@ DEFAULT_DSRDTR = False
 _LOGGER = logging.getLogger(__name__)
 
 
+def load_smart_data(json_path):
+    with open(json_path, "r") as file:
+        return json.load(file)
+
+
 # The main setup function to initialize the sensor platform
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
@@ -113,8 +118,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     config_dir = hass.config.config_dir
     json_path = os.path.join(config_dir, 'custom_components', 'smart2000usb', 'pgn_type.json')
     try:
-        with open(json_path, "r") as file:
-            smart_data = json.load(file)
+        smart_data = await hass.async_add_executor_job(load_smart_data, json_path)
 
         pgn_dict = {}
         # Iterate over each PGN entry in the list
