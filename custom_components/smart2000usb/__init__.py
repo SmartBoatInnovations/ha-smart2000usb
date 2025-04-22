@@ -27,7 +27,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data[DOMAIN][entry.entry_id] = entry.data
     
-    await hass.config_entries.async_forward_entry_setup(entry, "sensor")
+    # Forward the setup to the sensor platform
+    platforms = ["sensor"]
+    _LOGGER.debug("Forwarding setup to platforms: %s", platforms)
+    await hass.config_entries.async_forward_entry_setups(entry, platforms)
 
     _LOGGER.debug("Smart2000USB entry setup completed successfully and update listener registered")
     return True
@@ -35,7 +38,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.debug("Unloading Smart2000USB integration entry: %s", entry.as_dict())
     hass.data[DOMAIN].pop(entry.entry_id)
-    await hass.config_entries.async_forward_entry_unload(entry, "sensor")
+    
+    # Forward the unload to the sensor platform(s)
+    platforms = ["sensor"]
+    _LOGGER.debug("Forwarding unload to platforms: %s", platforms)
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, platforms)
+    _LOGGER.debug("Unload forwarded with result: %s", unload_ok)
+    
     _LOGGER.debug("Smart2000USB entry unloaded successfully")
     return True
 
