@@ -1,16 +1,3 @@
-"""
-Copyright (c) 2024 Smart Boat Innovations
-
-Version 1.0, 01 June 2024
-
-This file is part of the Smart Boat Innovations software.
-
-Smart Boat Innovations ("Licensor") grants you a limited, non-exclusive, non-transferable, revocable license to load and use this software through Home Assistant Community Store (HACS) for personal, non-commercial use only.
-
-You may not copy, distribute, or modify this file or the accompanying software. The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
-
-See the full license text in the accompanying LICENSE file.
-"""
 from .utils import *
 import logging
 _LOGGER = logging.getLogger(__name__)
@@ -3268,7 +3255,7 @@ def process_pgn_126720(hass, instance_name, data_raw):
     speed_of_sound_mode_raw = decode_number((data_raw >> 24) & 0xFFFF, 16)
     speed_of_sound_mode = speed_of_sound_mode_raw * 0.1 if speed_of_sound_mode_raw is not None else None
     publish_field(hass, instance_name, 'speed_of_sound_mode', 'Speed of Sound Mode', speed_of_sound_mode, 'Airmar: Calibrate Depth', 'm/s', '126720')
-    publish_field(hass, instance_name, 'speed_of_sound_mode_knots', 'Speed of Sound Mode Knots', mps_to_knots(speed_of_sound_mode), 'Airmar: Calibrate Depth', 'Kn', '126720')
+    publish_field(hass, instance_name, 'speed_of_sound_mode_knots', 'Speed of Sound Mode Knots', mps_to_knots(speed_of_sound_mode), 'Airmar: Calibrate Depth', 'kn', '126720')
 
     # reserved | Offset: 40, Length: 8, Resolution: 1, Field Type: RESERVED
     reserved_raw = (data_raw >> 40) & 0xFF
@@ -3312,7 +3299,7 @@ def process_pgn_126720(hass, instance_name, data_raw):
     output_speed_raw = decode_number((data_raw >> 48) & 0xFFFF, 16)
     output_speed = output_speed_raw * 0.01 if output_speed_raw is not None else None
     publish_field(hass, instance_name, 'output_speed', 'Output speed', output_speed, 'Airmar: Calibrate Speed', 'm/s', '126720')
-    publish_field(hass, instance_name, 'output_speed_knots', 'Output speed Knots', mps_to_knots(output_speed), 'Airmar: Calibrate Speed', 'Kn', '126720')
+    publish_field(hass, instance_name, 'output_speed_knots', 'Output speed Knots', mps_to_knots(output_speed), 'Airmar: Calibrate Speed', 'kn', '126720')
 
 def process_pgn_126720(hass, instance_name, data_raw):
     from .sensor import publish_field
@@ -4230,7 +4217,7 @@ def process_pgn_127233(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 224) & 0xFFFF, 16)
     sog = sog_raw * 0.01 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'Man Overboard Notification', 'm/s', '127233')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'Man Overboard Notification', 'Kn', '127233')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'Man Overboard Notification', 'kn', '127233')
 
     # mmsi_of_vessel_of_origin | Offset: 240, Length: 32, Resolution: 1, Field Type: MMSI
     mmsi_of_vessel_of_origin_raw = (data_raw >> 240) & 0xFFFFFFFF
@@ -6337,13 +6324,13 @@ def process_pgn_128259(hass, instance_name, data_raw):
     speed_water_referenced_raw = decode_number((data_raw >> 8) & 0xFFFF, 16)
     speed_water_referenced = speed_water_referenced_raw * 0.01 if speed_water_referenced_raw is not None else None
     publish_field(hass, instance_name, 'speed_water_referenced', 'Speed Water Referenced', speed_water_referenced, 'Speed', 'm/s', '128259')
-    publish_field(hass, instance_name, 'speed_water_referenced_knots', 'Speed Water Referenced Knots', mps_to_knots(speed_water_referenced), 'Speed', 'Kn', '128259')
+    publish_field(hass, instance_name, 'speed_water_referenced_knots', 'Speed Water Referenced Knots', mps_to_knots(speed_water_referenced), 'Speed', 'kn', '128259')
 
     # speed_ground_referenced | Offset: 24, Length: 16, Resolution: 0.01, Field Type: NUMBER
     speed_ground_referenced_raw = decode_number((data_raw >> 24) & 0xFFFF, 16)
     speed_ground_referenced = speed_ground_referenced_raw * 0.01 if speed_ground_referenced_raw is not None else None
     publish_field(hass, instance_name, 'speed_ground_referenced', 'Speed Ground Referenced', speed_ground_referenced, 'Speed', 'm/s', '128259')
-    publish_field(hass, instance_name, 'speed_ground_referenced_knots', 'Speed Ground Referenced Knots', mps_to_knots(speed_ground_referenced), 'Speed', 'Kn', '128259')
+    publish_field(hass, instance_name, 'speed_ground_referenced_knots', 'Speed Ground Referenced Knots', mps_to_knots(speed_ground_referenced), 'Speed', 'kn', '128259')
 
     # speed_water_referenced_type | Offset: 40, Length: 8, Resolution: 1, Field Type: LOOKUP
     speed_water_referenced_type_raw = (data_raw >> 40) & 0xFF
@@ -6467,7 +6454,7 @@ def process_pgn_128520(hass, instance_name, data_raw):
     speed_raw = decode_number((data_raw >> 88) & 0xFFFF, 16)
     speed = speed_raw * 0.01 if speed_raw is not None else None
     publish_field(hass, instance_name, 'speed', 'Speed', speed, 'Tracked Target Data', 'm/s', '128520')
-    publish_field(hass, instance_name, 'speed_knots', 'Speed Knots', mps_to_knots(speed), 'Tracked Target Data', 'Kn', '128520')
+    publish_field(hass, instance_name, 'speed_knots', 'Speed Knots', mps_to_knots(speed), 'Tracked Target Data', 'kn', '128520')
 
     # cpa | Offset: 104, Length: 32, Resolution: 0.01, Field Type: NUMBER
     cpa_raw = decode_number((data_raw >> 104) & 0xFFFFFFFF, 32)
@@ -6637,7 +6624,7 @@ def process_pgn_128538(hass, instance_name, data_raw):
         speed_of_elevator_car_raw -= (1 << 16)
     speed_of_elevator_car = speed_of_elevator_car_raw * 0.01 if speed_of_elevator_car_raw is not None else None
     publish_field(hass, instance_name, 'speed_of_elevator_car', 'Speed of Elevator Car', speed_of_elevator_car, 'Elevator Car Status', 'm/s', '128538')
-    publish_field(hass, instance_name, 'speed_of_elevator_car_knots', 'Speed of Elevator Car Knots', mps_to_knots(speed_of_elevator_car), 'Elevator Car Status', 'Kn', '128538')
+    publish_field(hass, instance_name, 'speed_of_elevator_car_knots', 'Speed of Elevator Car Knots', mps_to_knots(speed_of_elevator_car), 'Elevator Car Status', 'kn', '128538')
 
     # elevator_brake_status | Offset: 168, Length: 2, Resolution: 1, Field Type: NUMBER
     elevator_brake_status_raw = decode_number((data_raw >> 168) & 0x3, 2)
@@ -6835,7 +6822,7 @@ def process_pgn_128777(hass, instance_name, data_raw):
     windlass_line_speed_raw = decode_number((data_raw >> 40) & 0xFFFF, 16)
     windlass_line_speed = windlass_line_speed_raw * 0.01 if windlass_line_speed_raw is not None else None
     publish_field(hass, instance_name, 'windlass_line_speed', 'Windlass Line Speed', windlass_line_speed, 'Anchor Windlass Operating Status', 'm/s', '128777')
-    publish_field(hass, instance_name, 'windlass_line_speed_knots', 'Windlass Line Speed Knots', mps_to_knots(windlass_line_speed), 'Anchor Windlass Operating Status', 'Kn', '128777')
+    publish_field(hass, instance_name, 'windlass_line_speed_knots', 'Windlass Line Speed Knots', mps_to_knots(windlass_line_speed), 'Anchor Windlass Operating Status', 'kn', '128777')
 
     # anchor_docking_status | Offset: 56, Length: 2, Resolution: 1, Field Type: LOOKUP
     anchor_docking_status_raw = (data_raw >> 56) & 0x3
@@ -6963,7 +6950,7 @@ def process_pgn_129026(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 32) & 0xFFFF, 16)
     sog = sog_raw * 0.01 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'COG & SOG, Rapid Update', 'm/s', '129026')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'COG & SOG, Rapid Update', 'Kn', '129026')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'COG & SOG, Rapid Update', 'kn', '129026')
 
     # reserved | Offset: 48, Length: 16, Resolution: 1, Field Type: RESERVED
     reserved_raw = (data_raw >> 48) & 0xFFFF
@@ -7227,7 +7214,7 @@ def process_pgn_129038(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 128) & 0xFFFF, 16)
     sog = sog_raw * 0.01 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'AIS Class A Position Report', 'm/s', '129038')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS Class A Position Report', 'Kn', '129038')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS Class A Position Report', 'kn', '129038')
 
     # communication_state | Offset: 144, Length: 19, Resolution: 1, Field Type: BINARY
     communication_state_raw = (data_raw >> 144) & 0x7FFFF
@@ -7339,7 +7326,7 @@ def process_pgn_129039(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 128) & 0xFFFF, 16)
     sog = sog_raw * 0.01 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'AIS Class B Position Report', 'm/s', '129039')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS Class B Position Report', 'Kn', '129039')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS Class B Position Report', 'kn', '129039')
 
     # communication_state | Offset: 144, Length: 19, Resolution: 1, Field Type: BINARY
     communication_state_raw = (data_raw >> 144) & 0x7FFFF
@@ -7464,7 +7451,7 @@ def process_pgn_129040(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 128) & 0xFFFF, 16)
     sog = sog_raw * 0.01 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'AIS Class B Extended Position Report', 'm/s', '129040')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS Class B Extended Position Report', 'Kn', '129040')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS Class B Extended Position Report', 'kn', '129040')
 
     # regional_application | Offset: 144, Length: 8, Resolution: 1, Field Type: SPARE
     regional_application_raw = (data_raw >> 144) & 0xFF
@@ -7882,7 +7869,7 @@ def process_pgn_129284(hass, instance_name, data_raw):
         waypoint_closing_velocity_raw -= (1 << 16)
     waypoint_closing_velocity = waypoint_closing_velocity_raw * 0.01 if waypoint_closing_velocity_raw is not None else None
     publish_field(hass, instance_name, 'waypoint_closing_velocity', 'Waypoint Closing Velocity', waypoint_closing_velocity, 'Navigation Data', 'm/s', '129284')
-    publish_field(hass, instance_name, 'waypoint_closing_velocity_knots', 'Waypoint Closing Velocity Knots', mps_to_knots(waypoint_closing_velocity), 'Navigation Data', 'Kn', '129284')
+    publish_field(hass, instance_name, 'waypoint_closing_velocity_knots', 'Waypoint Closing Velocity Knots', mps_to_knots(waypoint_closing_velocity), 'Navigation Data', 'kn', '129284')
 
 def process_pgn_129285(hass, instance_name, data_raw):
     from .sensor import publish_field
@@ -7950,7 +7937,7 @@ def process_pgn_129291(hass, instance_name, data_raw):
     drift_raw = decode_number((data_raw >> 32) & 0xFFFF, 16)
     drift = drift_raw * 0.01 if drift_raw is not None else None
     publish_field(hass, instance_name, 'drift', 'Drift', drift, 'Set & Drift, Rapid Update', 'm/s', '129291')
-    publish_field(hass, instance_name, 'drift_knots', 'Drift Knots', mps_to_knots(drift), 'Set & Drift, Rapid Update', 'Kn', '129291')
+    publish_field(hass, instance_name, 'drift_knots', 'Drift Knots', mps_to_knots(drift), 'Set & Drift, Rapid Update', 'kn', '129291')
 
     # reserved | Offset: 48, Length: 16, Resolution: 1, Field Type: RESERVED
     reserved_raw = (data_raw >> 48) & 0xFFFF
@@ -9152,7 +9139,7 @@ def process_pgn_129798(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 128) & 0xFFFF, 16)
     sog = sog_raw * 0.1 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'AIS SAR Aircraft Position Report', 'm/s', '129798')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS SAR Aircraft Position Report', 'Kn', '129798')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'AIS SAR Aircraft Position Report', 'kn', '129798')
 
     # communication_state | Offset: 144, Length: 19, Resolution: 1, Field Type: BINARY
     communication_state_raw = (data_raw >> 144) & 0x7FFFF
@@ -10577,7 +10564,7 @@ def process_pgn_130306(hass, instance_name, data_raw):
     wind_speed_raw = decode_number((data_raw >> 8) & 0xFFFF, 16)
     wind_speed = wind_speed_raw * 0.01 if wind_speed_raw is not None else None
     publish_field(hass, instance_name, 'wind_speed', 'Wind Speed', wind_speed, 'Wind Data', 'm/s', '130306')
-    publish_field(hass, instance_name, 'wind_speed_knots', 'Wind Speed Knots', mps_to_knots(wind_speed), 'Wind Data', 'Kn', '130306')
+    publish_field(hass, instance_name, 'wind_speed_knots', 'Wind Speed Knots', mps_to_knots(wind_speed), 'Wind Data', 'kn', '130306')
 
     # wind_angle | Offset: 24, Length: 16, Resolution: 0.0001, Field Type: NUMBER
     wind_angle_raw = decode_number((data_raw >> 24) & 0xFFFF, 16)
@@ -10979,7 +10966,7 @@ def process_pgn_130322(hass, instance_name, data_raw):
     current_speed_raw = decode_number((data_raw >> 152) & 0xFFFF, 16)
     current_speed = current_speed_raw * 0.01 if current_speed_raw is not None else None
     publish_field(hass, instance_name, 'current_speed', 'Current speed', current_speed, 'Current Station Data', 'm/s', '130322')
-    publish_field(hass, instance_name, 'current_speed_knots', 'Current speed Knots', mps_to_knots(current_speed), 'Current Station Data', 'Kn', '130322')
+    publish_field(hass, instance_name, 'current_speed_knots', 'Current speed Knots', mps_to_knots(current_speed), 'Current Station Data', 'kn', '130322')
 
     # current_flow_direction | Offset: 168, Length: 16, Resolution: 0.0001, Field Type: NUMBER
     current_flow_direction_raw = decode_number((data_raw >> 168) & 0xFFFF, 16)
@@ -11035,7 +11022,7 @@ def process_pgn_130323(hass, instance_name, data_raw):
     wind_speed_raw = decode_number((data_raw >> 120) & 0xFFFF, 16)
     wind_speed = wind_speed_raw * 0.01 if wind_speed_raw is not None else None
     publish_field(hass, instance_name, 'wind_speed', 'Wind Speed', wind_speed, 'Meteorological Station Data', 'm/s', '130323')
-    publish_field(hass, instance_name, 'wind_speed_knots', 'Wind Speed Knots', mps_to_knots(wind_speed), 'Meteorological Station Data', 'Kn', '130323')
+    publish_field(hass, instance_name, 'wind_speed_knots', 'Wind Speed Knots', mps_to_knots(wind_speed), 'Meteorological Station Data', 'kn', '130323')
 
     # wind_direction | Offset: 136, Length: 16, Resolution: 0.0001, Field Type: NUMBER
     wind_direction_raw = decode_number((data_raw >> 136) & 0xFFFF, 16)
@@ -11057,7 +11044,7 @@ def process_pgn_130323(hass, instance_name, data_raw):
     wind_gusts_raw = decode_number((data_raw >> 160) & 0xFFFF, 16)
     wind_gusts = wind_gusts_raw * 0.01 if wind_gusts_raw is not None else None
     publish_field(hass, instance_name, 'wind_gusts', 'Wind Gusts', wind_gusts, 'Meteorological Station Data', 'm/s', '130323')
-    publish_field(hass, instance_name, 'wind_gusts_knots', 'Wind Gusts Knots', mps_to_knots(wind_gusts), 'Meteorological Station Data', 'Kn', '130323')
+    publish_field(hass, instance_name, 'wind_gusts_knots', 'Wind Gusts Knots', mps_to_knots(wind_gusts), 'Meteorological Station Data', 'kn', '130323')
 
     # atmospheric_pressure | Offset: 176, Length: 16, Resolution: 100, Field Type: NUMBER
     atmospheric_pressure_raw = decode_number((data_raw >> 176) & 0xFFFF, 16)
@@ -11112,7 +11099,7 @@ def process_pgn_130324(hass, instance_name, data_raw):
     wind_speed_raw = decode_number((data_raw >> 120) & 0xFFFF, 16)
     wind_speed = wind_speed_raw * 0.01 if wind_speed_raw is not None else None
     publish_field(hass, instance_name, 'wind_speed', 'Wind Speed', wind_speed, 'Moored Buoy Station Data', 'm/s', '130324')
-    publish_field(hass, instance_name, 'wind_speed_knots', 'Wind Speed Knots', mps_to_knots(wind_speed), 'Moored Buoy Station Data', 'Kn', '130324')
+    publish_field(hass, instance_name, 'wind_speed_knots', 'Wind Speed Knots', mps_to_knots(wind_speed), 'Moored Buoy Station Data', 'kn', '130324')
 
     # wind_direction | Offset: 136, Length: 16, Resolution: 0.0001, Field Type: NUMBER
     wind_direction_raw = decode_number((data_raw >> 136) & 0xFFFF, 16)
@@ -11134,7 +11121,7 @@ def process_pgn_130324(hass, instance_name, data_raw):
     wind_gusts_raw = decode_number((data_raw >> 160) & 0xFFFF, 16)
     wind_gusts = wind_gusts_raw * 0.01 if wind_gusts_raw is not None else None
     publish_field(hass, instance_name, 'wind_gusts', 'Wind Gusts', wind_gusts, 'Moored Buoy Station Data', 'm/s', '130324')
-    publish_field(hass, instance_name, 'wind_gusts_knots', 'Wind Gusts Knots', mps_to_knots(wind_gusts), 'Moored Buoy Station Data', 'Kn', '130324')
+    publish_field(hass, instance_name, 'wind_gusts_knots', 'Wind Gusts Knots', mps_to_knots(wind_gusts), 'Moored Buoy Station Data', 'kn', '130324')
 
     # wave_height | Offset: 176, Length: 16, Resolution: 1, Field Type: NUMBER
     wave_height_raw = decode_number((data_raw >> 176) & 0xFFFF, 16)
@@ -11767,7 +11754,7 @@ def process_pgn_130577(hass, instance_name, data_raw):
     sog_raw = decode_number((data_raw >> 32) & 0xFFFF, 16)
     sog = sog_raw * 0.01 if sog_raw is not None else None
     publish_field(hass, instance_name, 'sog', 'SOG', sog, 'Direction Data', 'm/s', '130577')
-    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'Direction Data', 'Kn', '130577')
+    publish_field(hass, instance_name, 'sog_knots', 'SOG Knots', mps_to_knots(sog), 'Direction Data', 'kn', '130577')
 
     # heading | Offset: 48, Length: 16, Resolution: 0.0001, Field Type: NUMBER
     heading_raw = decode_number((data_raw >> 48) & 0xFFFF, 16)
@@ -11779,7 +11766,7 @@ def process_pgn_130577(hass, instance_name, data_raw):
     speed_through_water_raw = decode_number((data_raw >> 64) & 0xFFFF, 16)
     speed_through_water = speed_through_water_raw * 0.01 if speed_through_water_raw is not None else None
     publish_field(hass, instance_name, 'speed_through_water', 'Speed through Water', speed_through_water, 'Direction Data', 'm/s', '130577')
-    publish_field(hass, instance_name, 'speed_through_water_knots', 'Speed through Water Knots', mps_to_knots(speed_through_water), 'Direction Data', 'Kn', '130577')
+    publish_field(hass, instance_name, 'speed_through_water_knots', 'Speed through Water Knots', mps_to_knots(speed_through_water), 'Direction Data', 'kn', '130577')
 
     # set | Offset: 80, Length: 16, Resolution: 0.0001, Field Type: NUMBER
     set_raw = decode_number((data_raw >> 80) & 0xFFFF, 16)
@@ -11791,7 +11778,7 @@ def process_pgn_130577(hass, instance_name, data_raw):
     drift_raw = decode_number((data_raw >> 96) & 0xFFFF, 16)
     drift = drift_raw * 0.01 if drift_raw is not None else None
     publish_field(hass, instance_name, 'drift', 'Drift', drift, 'Direction Data', 'm/s', '130577')
-    publish_field(hass, instance_name, 'drift_knots', 'Drift Knots', mps_to_knots(drift), 'Direction Data', 'Kn', '130577')
+    publish_field(hass, instance_name, 'drift_knots', 'Drift Knots', mps_to_knots(drift), 'Direction Data', 'kn', '130577')
 
 def process_pgn_130578(hass, instance_name, data_raw):
     from .sensor import publish_field
@@ -11802,7 +11789,7 @@ def process_pgn_130578(hass, instance_name, data_raw):
         longitudinal_speed__water_referenced_raw -= (1 << 16)
     longitudinal_speed__water_referenced = longitudinal_speed__water_referenced_raw * 0.001 if longitudinal_speed__water_referenced_raw is not None else None
     publish_field(hass, instance_name, 'longitudinal_speed__water_referenced', 'Longitudinal Speed, Water-referenced', longitudinal_speed__water_referenced, 'Vessel Speed Components', 'm/s', '130578')
-    publish_field(hass, instance_name, 'longitudinal_speed__water_referenced_knots', 'Longitudinal Speed, Water-referenced Knots', mps_to_knots(longitudinal_speed__water_referenced), 'Vessel Speed Components', 'Kn', '130578')
+    publish_field(hass, instance_name, 'longitudinal_speed__water_referenced_knots', 'Longitudinal Speed, Water-referenced Knots', mps_to_knots(longitudinal_speed__water_referenced), 'Vessel Speed Components', 'kn', '130578')
 
     # transverse_speed__water_referenced | Offset: 16, Length: 16, Resolution: 0.001, Field Type: NUMBER
     transverse_speed__water_referenced_raw = decode_number((data_raw >> 16) & 0xFFFF, 16)
@@ -11810,7 +11797,7 @@ def process_pgn_130578(hass, instance_name, data_raw):
         transverse_speed__water_referenced_raw -= (1 << 16)
     transverse_speed__water_referenced = transverse_speed__water_referenced_raw * 0.001 if transverse_speed__water_referenced_raw is not None else None
     publish_field(hass, instance_name, 'transverse_speed__water_referenced', 'Transverse Speed, Water-referenced', transverse_speed__water_referenced, 'Vessel Speed Components', 'm/s', '130578')
-    publish_field(hass, instance_name, 'transverse_speed__water_referenced_knots', 'Transverse Speed, Water-referenced Knots', mps_to_knots(transverse_speed__water_referenced), 'Vessel Speed Components', 'Kn', '130578')
+    publish_field(hass, instance_name, 'transverse_speed__water_referenced_knots', 'Transverse Speed, Water-referenced Knots', mps_to_knots(transverse_speed__water_referenced), 'Vessel Speed Components', 'kn', '130578')
 
     # longitudinal_speed__ground_referenced | Offset: 32, Length: 16, Resolution: 0.001, Field Type: NUMBER
     longitudinal_speed__ground_referenced_raw = decode_number((data_raw >> 32) & 0xFFFF, 16)
@@ -11818,7 +11805,7 @@ def process_pgn_130578(hass, instance_name, data_raw):
         longitudinal_speed__ground_referenced_raw -= (1 << 16)
     longitudinal_speed__ground_referenced = longitudinal_speed__ground_referenced_raw * 0.001 if longitudinal_speed__ground_referenced_raw is not None else None
     publish_field(hass, instance_name, 'longitudinal_speed__ground_referenced', 'Longitudinal Speed, Ground-referenced', longitudinal_speed__ground_referenced, 'Vessel Speed Components', 'm/s', '130578')
-    publish_field(hass, instance_name, 'longitudinal_speed__ground_referenced_knots', 'Longitudinal Speed, Ground-referenced Knots', mps_to_knots(longitudinal_speed__ground_referenced), 'Vessel Speed Components', 'Kn', '130578')
+    publish_field(hass, instance_name, 'longitudinal_speed__ground_referenced_knots', 'Longitudinal Speed, Ground-referenced Knots', mps_to_knots(longitudinal_speed__ground_referenced), 'Vessel Speed Components', 'kn', '130578')
 
     # transverse_speed__ground_referenced | Offset: 48, Length: 16, Resolution: 0.001, Field Type: NUMBER
     transverse_speed__ground_referenced_raw = decode_number((data_raw >> 48) & 0xFFFF, 16)
@@ -11826,7 +11813,7 @@ def process_pgn_130578(hass, instance_name, data_raw):
         transverse_speed__ground_referenced_raw -= (1 << 16)
     transverse_speed__ground_referenced = transverse_speed__ground_referenced_raw * 0.001 if transverse_speed__ground_referenced_raw is not None else None
     publish_field(hass, instance_name, 'transverse_speed__ground_referenced', 'Transverse Speed, Ground-referenced', transverse_speed__ground_referenced, 'Vessel Speed Components', 'm/s', '130578')
-    publish_field(hass, instance_name, 'transverse_speed__ground_referenced_knots', 'Transverse Speed, Ground-referenced Knots', mps_to_knots(transverse_speed__ground_referenced), 'Vessel Speed Components', 'Kn', '130578')
+    publish_field(hass, instance_name, 'transverse_speed__ground_referenced_knots', 'Transverse Speed, Ground-referenced Knots', mps_to_knots(transverse_speed__ground_referenced), 'Vessel Speed Components', 'kn', '130578')
 
     # stern_speed__water_referenced | Offset: 64, Length: 16, Resolution: 0.001, Field Type: NUMBER
     stern_speed__water_referenced_raw = decode_number((data_raw >> 64) & 0xFFFF, 16)
@@ -11834,7 +11821,7 @@ def process_pgn_130578(hass, instance_name, data_raw):
         stern_speed__water_referenced_raw -= (1 << 16)
     stern_speed__water_referenced = stern_speed__water_referenced_raw * 0.001 if stern_speed__water_referenced_raw is not None else None
     publish_field(hass, instance_name, 'stern_speed__water_referenced', 'Stern Speed, Water-referenced', stern_speed__water_referenced, 'Vessel Speed Components', 'm/s', '130578')
-    publish_field(hass, instance_name, 'stern_speed__water_referenced_knots', 'Stern Speed, Water-referenced Knots', mps_to_knots(stern_speed__water_referenced), 'Vessel Speed Components', 'Kn', '130578')
+    publish_field(hass, instance_name, 'stern_speed__water_referenced_knots', 'Stern Speed, Water-referenced Knots', mps_to_knots(stern_speed__water_referenced), 'Vessel Speed Components', 'kn', '130578')
 
     # stern_speed__ground_referenced | Offset: 80, Length: 16, Resolution: 0.001, Field Type: NUMBER
     stern_speed__ground_referenced_raw = decode_number((data_raw >> 80) & 0xFFFF, 16)
@@ -11842,7 +11829,7 @@ def process_pgn_130578(hass, instance_name, data_raw):
         stern_speed__ground_referenced_raw -= (1 << 16)
     stern_speed__ground_referenced = stern_speed__ground_referenced_raw * 0.001 if stern_speed__ground_referenced_raw is not None else None
     publish_field(hass, instance_name, 'stern_speed__ground_referenced', 'Stern Speed, Ground-referenced', stern_speed__ground_referenced, 'Vessel Speed Components', 'm/s', '130578')
-    publish_field(hass, instance_name, 'stern_speed__ground_referenced_knots', 'Stern Speed, Ground-referenced Knots', mps_to_knots(stern_speed__ground_referenced), 'Vessel Speed Components', 'Kn', '130578')
+    publish_field(hass, instance_name, 'stern_speed__ground_referenced_knots', 'Stern Speed, Ground-referenced Knots', mps_to_knots(stern_speed__ground_referenced), 'Vessel Speed Components', 'kn', '130578')
 
 def process_pgn_130579(hass, instance_name, data_raw):
     from .sensor import publish_field
