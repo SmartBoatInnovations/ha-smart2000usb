@@ -1,16 +1,25 @@
 # ha-smart2000usb
 
-## Smart Boat 2000 USB Integration
+## NMEA 2000 USB-CAN Integration for Home Assistant
 
-![SMART BOAT](.github/smart2000.png)
+![Smart Boat 2000 USB Integration](.github/smart2000.png)
 
-I'm Rob, a seasoned sailor and tech enthusiast dedicated to revolutionizing the boating industry through the integration of accessible technology. With over 20 years of global sailing experience and a Computer Science degree, I am committed to providing you with practical innovations and ideas that will transform your boating experience. At Smart Boat Innovations, we explore the world of boat automation and harness the power of the Internet of Things (IoT) technology.
+The **ha-smart2000usb** integration lets **Home Assistant** receive live **NMEA 2000 (CAN bus)** data via a direct USB-CAN adapter. Plug it straight into your Raspberry Pi for a reliable, hard-wired data feed, perfect for permanent installations or when you need maximum stability. Stream engine data, tank levels, wind, depth, GPS, and other marine instruments directly into your Home Assistant dashboards.
 
-My philosophy revolves around utilizing free open systems and affordable sensors and equipment. I believe that everyone should have access to these advancements without breaking the bank. While our website https://www.smartboatinnovations.com/ provides valuable insights and information, the majority of our content can be found on our YouTube channel. https://www.youtube.com/@SmartBoatInnovations
-I invite you to head over there, subscribe to our channel, and join the vibrant community of boating enthusiasts who are exploring the exciting possibilities of affordable technology.
+📖 **General NMEA 2000 article:** [NMEA 2000 – Home Assistant with ESP32 & USB-CAN](https://smartboatinnovations.com/nmea-2000-home-assistant-esp32-usb-can/)  
+🔗 **Integration setup guide:** [NMEA 2000 USB-CAN integration guide](https://smartboatinnovations.com/code/smart2000-usb/)  
+💡 **Related project:** [Build a Central Marine Computer](https://smartboatinnovations.com/build-central-marine-computer/)  
+🌐 **Smart Boat Innovations homepage:** [smartboatinnovations.com](https://smartboatinnovations.com)  
 
-For instructions on using this ha-smart2000usb integration go to 
-https://smartboatinnovations.com/code/smart2000-usb/
-or watch this video guide: https://youtu.be/t1qDKVBHRrs
+🎥 **Video tutorial:** [Watch on YouTube](https://youtu.be/t1qDKVBHRrs)
 
-<a href='https://ko-fi.com/smartboatinnovations' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+---
+
+### About Smart Boat Innovations
+I'm Rob, a sailor and tech enthusiast with over 20 years of global sailing experience and a Computer Science degree. At **Smart Boat Innovations**, we focus on open-source marine electronics, **Raspberry Pi**, **ESP32**, **NMEA 0183**, **NMEA 2000**, and **Home Assistant** projects that make boating smarter, safer, and more affordable.
+
+💬 Subscribe to our [YouTube channel](https://www.youtube.com/@SmartBoatInnovations) for more projects, ideas, and tutorials.  
+
+🧭 Join the discussion on [r/smartboating on Reddit](https://www.reddit.com/r/smartboating)
+
+☕ If you’ve found this useful, you can [support my work on Ko-fi](https://ko-fi.com/smartboatinnovations).
