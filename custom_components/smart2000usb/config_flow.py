@@ -39,16 +39,11 @@ class Smart2000USBConfigFlow(config_entries.ConfigFlow, domain="smart2000usb"):
     @callback
     def async_get_options_flow(config_entry):
         _LOGGER.debug("Getting options flow handler")
-        return OptionsFlowHandler(config_entry)
+        return OptionsFlowHandler()
 
 
 
 class OptionsFlowHandler(config_entries.OptionsFlow):
-    def __init__(self, config_entry):
-        _LOGGER.debug("Initializing OptionsFlowHandler with config_entry: %s", config_entry)
-        self.config_entry = config_entry
-        # Log the initial state of the config entry for debugging
-        _LOGGER.debug("Initial config_entry data: %s", self.config_entry.data)
 
     async def async_step_init(self, user_input=None):
         _LOGGER.debug("OptionsFlowHandler.async_step_init called with user_input: %s", user_input)
