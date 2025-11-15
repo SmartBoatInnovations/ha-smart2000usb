@@ -4607,9 +4607,10 @@ def process_pgn_127489(hass, instance_name, data_raw):
 
     # total_engine_hours | Offset: 88, Length: 32, Resolution: 1, Field Type: TIME
     total_engine_hours_raw = (data_raw >> 88) & 0xFFFFFFFF
-    total_engine_hours = decode_time(total_engine_hours_raw * 1)
-    publish_field(hass, instance_name, 'total_engine_hours', 'Total Engine hours', total_engine_hours, 'Engine Parameters, Dynamic', 's', '127489')
-
+    total_engine_hours = decode_duration(total_engine_hours_raw * 1)  # -> hours (float, 1 dp)
+    publish_field(hass, instance_name, 'total_engine_hours', 'Total Engine Hours',
+                  total_engine_hours, 'Engine Parameters, Dynamic', 'h', '127489')   
+    
     # coolant_pressure | Offset: 120, Length: 16, Resolution: 100, Field Type: NUMBER
     coolant_pressure_raw = decode_number((data_raw >> 120) & 0xFFFF, 16)
     coolant_pressure = coolant_pressure_raw * 100 if coolant_pressure_raw is not None else None
@@ -4872,9 +4873,10 @@ def process_pgn_127494(hass, instance_name, data_raw):
 
     # drive_motor_hours | Offset: 192, Length: 32, Resolution: 1, Field Type: TIME
     drive_motor_hours_raw = (data_raw >> 192) & 0xFFFFFFFF
-    drive_motor_hours = decode_time(drive_motor_hours_raw * 1)
-    publish_field(hass, instance_name, 'drive_motor_hours', 'Drive/Motor Hours', drive_motor_hours, 'Electric Drive Information', 's', '127494')
-
+    drive_motor_hours = decode_duration(drive_motor_hours_raw * 1)
+    publish_field(hass, instance_name, 'drive_motor_hours', 'Drive/Motor Hours',
+                  drive_motor_hours, 'Electric Drive Information', 'h', '127494')
+    
 def process_pgn_127495(hass, instance_name, data_raw):
     from .sensor import publish_field
     """Process and log data for PGN 127495."""

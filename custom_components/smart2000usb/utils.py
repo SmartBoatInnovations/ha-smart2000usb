@@ -121,6 +121,19 @@ def decode_time(seconds_since_midnight):
     # Format and return the time string
     return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
 
+def decode_duration(seconds, decimals=1):
+    """
+    Convert an arbitrary duration in seconds to hours (float), rounded.
+    Suitable for values that can exceed 24h (e.g., lifetime engine hours).
+    """
+    if seconds is None:
+        return None
+    try:
+        sec = float(seconds)
+    except (TypeError, ValueError):
+        return None
+    hours = sec / 3600.0
+    return round(hours, decimals)
 
 
 def decode_decimal(number_int):
