@@ -19,7 +19,7 @@ import logging
 import os
 from datetime import  datetime, timedelta
 import pprint
-import serial_asyncio
+import serial_asyncio_fast as serial_asyncio
 from serial import SerialException
 import binascii
 
