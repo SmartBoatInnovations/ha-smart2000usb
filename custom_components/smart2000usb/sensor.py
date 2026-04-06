@@ -716,7 +716,38 @@ class SerialSensor(SensorEntity):
         """Handle when an entity is about to be added to Home Assistant."""
         self._serial_loop_task = self.hass.loop.create_task(self.serial_read())
 
-
+    async def configure_waveshare_variable_mode(self, writer):
+        """Configure Waveshare adapter for variable length mode (250k, extended)."""
+        config_packet = [
+            0xAA, 0x55,
+            0x12,  # Type: variable protocol
+            0x05,  # CAN baud: 250 kbps
+            0x02,  # Frame type: extended
+            0x00,  # Filter ID1
+            0x00,  # Filter ID2
+            0x00,  # Filter ID3
+            0x00,  # Filter ID4
+            0x00,  # Mask/Block ID1
+            0x00,  # Mask/Block ID2
+            0x00,  # Mask/Block ID3
+            0x00,  # Mask/Block ID4
+            0x00,  # CAN mode: normal
+            0x00,  # Auto retransmit: enabled
+            0x00,  # Spare
+            0x00,  # Spare
+            0x00,  # Spare
+            0x00,  # Spare
+        ]
+    
+        checksum = sum(config_packet[2:]) & 0xFF
+        config_packet.append(checksum)
+    
+        frame = bytes(config_packet)
+        _LOGGER.info("Waveshare config frame: %s", frame.hex())
+        writer.write(frame)
+        await writer.drain()
+        _LOGGER.info("Waveshare configured: variable, 250k, extended, normal, auto-retry on, no filter")    
+        
     async def read_loop(self, reader):
         """Continuously read data from the serial port."""
 
@@ -764,7 +795,8 @@ class SerialSensor(SensorEntity):
         """Read the data from the port."""
         while True:
             try:
-                reader, _ = await serial_asyncio.open_serial_connection(
+                # Capture both reader AND writer so we can send config
+                reader, writer = await serial_asyncio.open_serial_connection(
                     url=self._port,
                     baudrate=self._baudrate,
                     bytesize=self._bytesize,
@@ -776,9 +808,14 @@ class SerialSensor(SensorEntity):
                 )
                 
                 _LOGGER.debug("Serial connection established")
+                
+                try:
+                    await self.configure_waveshare_variable_mode(writer)
+                except Exception as cfg_exc:
+                    _LOGGER.warning("Waveshare config failed (continuing anyway): %s", cfg_exc)
+    
                 await self.read_loop(reader)
-                
-                
+    
             except SerialException as exc:
                 _LOGGER.exception("Serial connection failed: %s. Retrying in %d seconds...", exc, self._retry_delay)
                 await self._handle_error()
@@ -788,7 +825,6 @@ class SerialSensor(SensorEntity):
             except Exception as exc:
                 _LOGGER.exception("Unexpected error: %s. Retrying in %d seconds...", exc, self._retry_delay)
                 await self._handle_error()
-
 
 
 
